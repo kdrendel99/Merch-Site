@@ -9,6 +9,7 @@ function ItemDetail(props){
       <h3>{item.name}</h3>
       <h3>{item.price}</h3>
       <h3>{item.description}</h3>
+      <button>Buy now!</button>
       <hr/>
     </React.Fragment>
   );
