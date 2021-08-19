@@ -14,9 +14,6 @@ class ItemControl extends React.Component{
   }
 
   handleClick = () => {
-    console.log("current state's merch list:");
-    console.log(this.state.merchList);
-
     if (this.state.selectedItem != null){
       this.setState({
         itemDetailVisibleOnPage: false,
@@ -30,8 +27,6 @@ class ItemControl extends React.Component{
   }
 
   handleBuy = (item) => {
-    console.log("Buying!!!");
-
     if (item.quantity === 0) {
       return;
     }    
@@ -70,23 +65,13 @@ class ItemControl extends React.Component{
 
     else{
       currentlyVisibleState = <ItemList itemList = {this.state.merchList} onItemSelection = {this.handleChangingSelectedItem} />;
-      // buttonText = "Add Item"
     }
-
-
-
-    // if (this.state.VisibleOnPage){
-    //   currentlyVisibleState = <ItemDetail />
-    //   buttonText = "Return to merch list";
-    // } else {
-    //   currentlyVisibleState = <ItemList />
-    //   buttonText = "Details";
-    // }
 
     return(
       <React.Fragment>
         {currentlyVisibleState}
-        <button onClick={this.handleClick}>{buttonText}</button>
+        {/* if the button text is not null, hide the button. if it contains text (and we're in the details page), show the "return to merch list" button */}
+        {buttonText !== null ? <button onClick={this.handleClick}>{buttonText}</button> : null}
       </React.Fragment>
     );
   }
