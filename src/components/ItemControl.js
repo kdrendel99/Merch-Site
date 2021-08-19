@@ -14,6 +14,9 @@ class ItemControl extends React.Component{
   }
 
   handleClick = () => {
+    console.log("current state's merch list:");
+    console.log(this.state.merchList);
+
     if (this.state.selectedItem != null){
       this.setState({
         itemDetailVisibleOnPage: false,
@@ -26,17 +29,42 @@ class ItemControl extends React.Component{
     }
   }
 
+  handleBuy = (item) => {
+    console.log("Buying!!!");
+
+    if (item.quantity === 0) {
+      return;
+    }    
+
+    const editedItem = {...item, quantity: item.quantity - 1};
+
+    const editedMerchList = this.state.merchList
+      .map(currentItem => {
+        if (currentItem.id === editedItem.id) {
+          return editedItem;
+        }
+        else {
+          return currentItem;
+        }
+      });
+
+    this.setState({
+      merchList: editedMerchList,
+      selectedItem: editedItem,
+    });
+  }
+
   handleChangingSelectedItem = (id) => {
     const selectedItem = this.state.merchList.filter(item => item.id === id)[0];
     this.setState({selectedItem: selectedItem});
   }
 
-  render(){
+  render() {
     let currentlyVisibleState = null;
     let buttonText = null;
 
     if (this.state.selectedItem != null){
-      currentlyVisibleState = <ItemDetail item = {this.state.selectedItem} />
+      currentlyVisibleState = <ItemDetail item = {this.state.selectedItem} onClickingBuy = {this.handleBuy}/>
       buttonText = "Return to merch list";
     }
 
