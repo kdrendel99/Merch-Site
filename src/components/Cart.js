@@ -1,16 +1,26 @@
 import React from 'react';
-
+import Item from './Item';
+import PropTypes from 'prop-types';
 
 function Cart(props){
   return(
-    <React.Fragmemt>
-      <h1>My Cart</h1>
-      <ul>
-        <li>{props}</li>
-      </ul>
-
-    </React.Fragmemt>
-  )
+    <React.Fragment>
+      <hr/>
+      {props.userCartList.map((item) => 
+        <Item
+          // whenItemClicked = {props.onItemSelection}
+          name={item.name}
+          price={item.price}
+          description={item.description}
+          id={item.id}
+          key={item.id}/>
+      )}
+    </React.Fragment>
+  );
 }
+
+Cart.propTypes = {
+  userCartList: PropTypes.array
+};
 
 export default Cart;

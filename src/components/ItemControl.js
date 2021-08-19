@@ -11,15 +11,18 @@ class ItemControl extends React.Component{
       itemDetailVisibleOnPage: false,
       merchList: merchItems,
       cartList: [],
-      selectedItem: null
+      selectedItem: null,
+      viewCart: false
     };
   }
 
   handleClick = () => {
-    if (this.state.selectedItem != null){
+    console.log("button clicked")
+    if (this.state.selectedItem != null || this.state.viewCart === true){
       this.setState({
         itemDetailVisibleOnPage: false,
-        selectedItem: null
+        selectedItem: null,
+        viewCart: false
       });
     } else {
       this.setState(prevState => ({
@@ -28,19 +31,22 @@ class ItemControl extends React.Component{
     }
   }
 
+  handleViewCartClick = () => {
+    this.setState({viewCart: true})
+  }
+
+
   handleBuy = (item) => {
     if (item.quantity === 0) {
       return;
     }    
 
-
     const editedItem = {...item, quantity: item.quantity - 1};
 
     const itemToAddToCart = {...editedItem};
     const editedCartList = this.state.cartList.concat(itemToAddToCart);
-    <Cart cartList = {this.state.cartList}/>
+    // <Cart cartList = {this.state.cartList}/>
     console.log(editedCartList);
-
 
     const editedMerchList = this.state.merchList
       .map(currentItem => {
@@ -68,7 +74,14 @@ class ItemControl extends React.Component{
     let currentlyVisibleState = null;
     let buttonText = null;
 
-    if (this.state.selectedItem != null){
+
+
+    if(this.state.viewCart){
+      currentlyVisibleState = <Cart userCartList = {this.state.cartList}/>
+      buttonText = "Return to merch list";
+    }
+
+    else if (this.state.selectedItem != null){
       currentlyVisibleState = <ItemDetail item = {this.state.selectedItem} onClickingBuy = {this.handleBuy}/>
       buttonText = "Return to merch list";
     }
@@ -82,6 +95,8 @@ class ItemControl extends React.Component{
         {currentlyVisibleState}
         {/* if the button text is not null, hide the button. if it contains text (and we're in the details page), show the "return to merch list" button */}
         {buttonText !== null ? <button onClick={this.handleClick}>{buttonText}</button> : null}
+        {/* opportunity: add add functionality. */}
+        <button onClick={this.handleViewCartClick}>View Cart</button>
       </React.Fragment>
     );
   }
