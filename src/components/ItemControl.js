@@ -2,6 +2,7 @@ import React from "react";
 import ItemList from "./ItemList";
 import ItemDetail from './ItemDetail';
 import merchItems from "./../data/merchItems.js"
+import Cart from "./Cart.js";
 
 class ItemControl extends React.Component{
   constructor(props){
@@ -9,6 +10,7 @@ class ItemControl extends React.Component{
     this.state = {
       itemDetailVisibleOnPage: false,
       merchList: merchItems,
+      cartList: [],
       selectedItem: null
     };
   }
@@ -31,7 +33,14 @@ class ItemControl extends React.Component{
       return;
     }    
 
+
     const editedItem = {...item, quantity: item.quantity - 1};
+
+    const itemToAddToCart = {...editedItem};
+    const editedCartList = this.state.cartList.concat(itemToAddToCart);
+    <Cart cartList = {this.state.cartList}/>
+    console.log(editedCartList);
+
 
     const editedMerchList = this.state.merchList
       .map(currentItem => {
@@ -45,6 +54,7 @@ class ItemControl extends React.Component{
 
     this.setState({
       merchList: editedMerchList,
+      cartList: editedCartList,
       selectedItem: editedItem,
     });
   }
